@@ -1,4 +1,3 @@
-
 # Gerador de Senha
 
 Este projeto implementa um gerador de senhas aleatórias utilizando Shell Script, com duas versões: uma com interface gráfica utilizando o `dialog` (caso esteja instalado) e outra sem interface gráfica, que funciona diretamente no terminal.
@@ -149,4 +148,3 @@ A senha gerada é embaralhada para garantir que os caracteres obrigatórios não
 
 ## Licença
 Este projeto está sob a licença MIT.
-
