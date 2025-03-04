@@ -1,6 +1,31 @@
-#!/bin/bash
+#!/usr/bin/env bash
+#
+# gerador_de_senhas.sh - Script para geração de senhas seguras
+#
+# Site:       https://github.com/themarcosramos/generator-passw-shell
+# Autor:      Marcos Ramos
+# Manutenção: Marcos Ramos
+#
+# ------------------------------------------------------------------------ #
+#  Este projeto implementa um gerador de senhas aleatórias utilizando Shell Script.
+# 
+#
+#  Exemplos:
+#      $ ./gerador_de_senhas.sh
+# ------------------------------------------------------------------------ #
+# Histórico:
+#
+#   v1.0 06/10/2023, Seu Nome:
+#       
+# ------------------------------------------------------------------------ #
+# Testado em:
+#     bash 5.1.16
+# ------------------------------------------------------------------------ #
 
-# Função para gerar uma senha segura
+# ------------------------------- VARIÁVEIS ----------------------------------------- #
+
+
+# ------------------------------- FUNÇÃO PARA GERAR SENHA ----------------------------------------- #
 generate_password() {
     local length=$1
     local lower_case="abcdefghijklmnopqrstuvwxyz"
@@ -25,6 +50,9 @@ generate_password() {
     echo "$password"
 }
 
+
+# ------------------------------- SOLICITANDO O TAMANHO DA SENHA ----------------------------------------- #
+
 # Loop para garantir que o usuário informe um número válido
 while true; do
     read -p "Quantos caracteres você deseja para a senha? (Entre 8 e 32) " length
@@ -39,4 +67,6 @@ done
 
 # Gera e exibe a senha
 password=$(generate_password "$length")
+
+# ------------------------------- GERANDO E EXIBINDO A SENHA ----------------------------------------- #
 echo "Sua senha gerada é: $password"
