@@ -7,20 +7,17 @@ generate_password() {
     local upper_case="ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     local numbers="0123456789"
     local special="!@#$%^&*()+?><:{}[]"
-
+    
     local all_chars="${lower_case}${upper_case}${numbers}${special}"
-
+    
     # Garantindo pelo menos um de cada tipo necessário
-    local password
-    password+=${lower_case:RANDOM%${#lower_case}:1}
-    password+=${upper_case:RANDOM%${#upper_case}:1}
-    password+=${numbers:RANDOM%${#numbers}:1}
-    password+=${special:RANDOM%${#special}:1}
-
-    # Preenchendo o restante da senha com caracteres aleatórios
-    for ((i=${#password}; i<length; i++)); do
-        password+=${all_chars:RANDOM%${#all_chars}:1}
-    done
+    password="$(
+        echo -n "${lower_case:RANDOM%${#lower_case}:1}"
+        echo -n "${upper_case:RANDOM%${#upper_case}:1}"
+        echo -n "${numbers:RANDOM%${#numbers}:1}"
+        echo -n "${special:RANDOM%${#special}:1}"
+        tr -dc "$all_chars" < /dev/urandom | fold -w1 | head -c "$((length - 4))"
+    )"
 
     # Embaralhando a senha
     password=$(echo "$password" | fold -w1 | shuf | tr -d '\n')
@@ -28,14 +25,17 @@ generate_password() {
     echo "$password"
 }
 
-# Solicita o tamanho da senha ao usuário
-read -p "Quantos caracteres você deseja para a senha? " length
+# Loop para garantir que o usuário informe um número válido
+while true; do
+    read -p "Quantos caracteres você deseja para a senha? (Entre 8 e 32) " length
 
-# Verifica se a entrada é um número válido e dentro do intervalo permitido
-if ! [[ "$length" =~ ^[0-9]+$ ]] || [ "$length" -lt 8 ] || [ "$length" -gt 32 ]; then
-    echo "Por favor, insira um número válido entre 8 e 32."
-    exit 1
-fi
+    # Verifica se a entrada é um número válido e dentro do intervalo permitido
+    if [[ "$length" =~ ^[0-9]+$ ]] && [ "$length" -ge 8 ] && [ "$length" -le 32 ]; then
+        break  # Se for válido, sai do loop
+    fi
+
+    echo "Erro: O comprimento da senha deve estar entre 8 e 32 caracteres. Tente novamente."
+done
 
 # Gera e exibe a senha
 password=$(generate_password "$length")
